@@ -29,7 +29,7 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
 
       console.log(body);
 
-      await axios.post(`${process.env.DOMAIN_URL}/api/v1/referrals`,
+      await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/referrals`,
         body
       );
       alert("Your referral sent successfully")
