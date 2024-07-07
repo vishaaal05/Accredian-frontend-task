@@ -1,4 +1,6 @@
 import React from 'react'
+import { useState } from 'react';
+import ReferModal from './ReferModal';
 
 const programs = [
     { name: "Professional Certificate Program in Product Management", referrerBonus: "₹ 7,000", refereeBonus: "₹ 9,000" },
@@ -11,6 +13,7 @@ const programs = [
 ];
 
 const ProgramList = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
         <div className="">
             <div className='text-center'>
@@ -62,9 +65,10 @@ const ProgramList = () => {
                 </select>
             </div>
             <div className="text-center">
-                <button className="bg-blue-700 text-white px-8 py-2 rounded-lg my-10">
+                <button onClick={() => setModalIsOpen(true)} className="bg-blue-700 text-white px-8 py-2 rounded-lg my-10">
                     Refer Now
                 </button>
+                <ReferModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} />
             </div>
 
 

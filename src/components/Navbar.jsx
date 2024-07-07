@@ -1,6 +1,9 @@
 import React from 'react'
+import { useState } from 'react';
+import ReferModal from './ReferModal';
 
 const Navbar = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
         <div>
             <nav>
@@ -17,7 +20,8 @@ const Navbar = () => {
 
                     <div className=''>
                     <ul className=' flex items-center gap-8  font-semibold text-md mx-10 '>
-                            <li className='cursor-pointer'>Refer & Earn</li>
+                            <li onClick={() => setModalIsOpen(true)} className='cursor-pointer'>Refer & Earn</li>
+                            <ReferModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} />
                             <li className='cursor-pointer'>Resources</li>
                             <li className='cursor-pointer'>About</li>
                             <li><button className='bg-slate-300 p-2 px-4 rounded-md'>Login</button></li>

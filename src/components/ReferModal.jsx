@@ -1,19 +1,46 @@
 // src/components/ReferModal.js
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useForm } from 'react-hook-form';
 import classNames from 'classnames';
+import axios from 'axios';
 
 Modal.setAppElement('#root');
 
 const ReferModal = ({ isOpen, onRequestClose }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
+  const [referralInputs, setReferralInputs] = useState({
+    name: "",
+    email: "",
+    referredBy: ""
+  })
+
+
+  const onSubmit = async (data) => {
     console.log(data);
     // Handle form submission logic
+    try {
+      const body = {
+        name: data.referredBy,
+        email: data.email,
+        referredBy: data.name
+      }
+
+      console.log(body);
+
+      await axios.post(`${process.env.DOMAIN_URL}/api/v1/referrals`,
+        body
+      );
+      alert("Your referral sent successfully")
+    } catch (error) {
+      // Handle authentication error (e.g., display an alert)
+      //  console.error('something wrong happens:', error.message);
+      alert("something went wrong")
+    }
     onRequestClose(); // Close the modal after submission
   };
+
 
   return (
     <Modal
@@ -30,6 +57,12 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
             Your Name
           </label>
           <input
+            onChange={e => {
+              setReferralInputs({
+                ...referralInputs,
+                name: e.target.value
+              });
+            }}
             type="text"
             id="name"
             {...register('name', { required: 'Name is required' })}
@@ -39,10 +72,35 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
           {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="email">
-            Friend's Email
+          <label className="w-block text-gray-700 mb-2" htmlFor="name">
+            Your Friend's Name
           </label>
           <input
+            onChange={e => {
+              setReferralInputs({
+                ...referralInputs,
+                referredBy: e.target.value
+              });
+            }}
+            type="text"
+            id="friendName"
+            {...register('referredBy', { required: 'Name is required' })}
+            className={classNames('w-full p-2 border rounded', { 'border-red-500': errors.name })}
+            placeholder="Enter your Friend's name"
+          />
+          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2" htmlFor="email">
+            Your Friend's Email
+          </label>
+          <input
+            onChange={e => {
+              setReferralInputs({
+                ...referralInputs,
+                email: e.target.value
+              });
+            }}
             type="email"
             id="email"
             {...register('email', {
