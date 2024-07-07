@@ -9,6 +9,7 @@ Modal.setAppElement('#root');
 
 const ReferModal = ({ isOpen, onRequestClose }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const [loading, setLoading] = useState(false);
 
   const [referralInputs, setReferralInputs] = useState({
     name: "",
@@ -18,6 +19,7 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
 
 
   const onSubmit = async (data) => {
+    setLoading(true); // Set loading to true before the API call
     console.log(data);
     // Handle form submission logic
     try {
@@ -27,7 +29,8 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
         referredBy: data.name
       }
 
-      console.log(body);
+      // console.log(body);
+
 
       await axios.post(`${import.meta.env.VITE_DOMAIN_URL}/api/v1/referrals`,
         body
@@ -37,6 +40,9 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
       // Handle authentication error (e.g., display an alert)
       //  console.error('something wrong happens:', error.message);
       alert("something went wrong")
+    }finally {
+      setLoading(false); // Set loading to false after the API call
+      onRequestClose(); // Close the modal after submission
     }
     onRequestClose(); // Close the modal after submission
   };
@@ -115,7 +121,8 @@ const ReferModal = ({ isOpen, onRequestClose }) => {
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
         </div>
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        {loading && <div className="loader">Sending...</div>} {/* Display loader when loading is true */}
+        <button disabled={loading} type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
           Send Referral
         </button>
       </form>
