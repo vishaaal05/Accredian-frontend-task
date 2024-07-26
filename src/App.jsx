@@ -6,12 +6,14 @@ import Footer from './components/Footer'
 import ProgramList from './components/ProgramList'
 import Faq from './components/Faq'
 import GetInTouch from './components/GetInTouch'
+import Flowbite from './components/Flowbite'
 
 function App() {
 
 
   return (
     <>
+    <Flowbite/>
      <Navbar/>
      <MainReactangle/>
      <MiddleReactangle/>
