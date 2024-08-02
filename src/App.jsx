@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-    <Flowbite/>
+    {/* <Flowbite/> */}
      <Navbar/>
      <MainReactangle/>
      <MiddleReactangle/>
